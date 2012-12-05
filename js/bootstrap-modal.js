@@ -125,37 +125,51 @@
 		}, 
 
 		tab: function () {
-			var that = this;
+			 var that = this;
 
-			if (this.isShown && this.options.consumeTab) {			
-				this.$element.on('keydown.tabindex.modal', '[data-tabindex]', function (e) {		    	
-			    	if (e.keyCode && e.keyCode == 9){	       
-				        var $next = $(this), 
-				        	$rollover = $(this);
-				        
-				       	that.$element.find('[data-tabindex]:enabled:not([readonly])').each(function (e) {
-			         		if (!e.shiftKey){
-			           	 		$next = $next.data('tabindex') < $(this).data('tabindex') ?
-				              		$next = $(this) :
-				              		$rollover = $(this);
-				          	} else {
-				            	$next = $next.data('tabindex') > $(this).data('tabindex') ?
-				              		$next = $(this) :
-				             		$rollover = $(this);
-				          	}
-				        });
+			 if (this.isShown && this.options.consumeTab) {			
+				 this.$element.on('keydown.tabindex.modal', '[data-tabindex]', function (e) {		    	
+					 if (e.keyCode && e.keyCode === 9){	       
+						 var $focus = $(this), 
+						 $next = null,
+						 $rollover = null;
 
-				        $next[0] !== $(this)[0] ?
-			          		$next.focus() : $rollover.focus();
+						 that.$element.find('[data-tabindex]:enabled:not([readonly])').each(
+							 function () {
+							 	if (!e.shiftKey){
+									 if ($focus.data('tabindex') < $(this).data('tabindex')){
+									 	if (($next === null) || ($(this).data('tabindex') < $next.data('tabindex'))){
+										 $next=$(this);
+										}
+									 }else{
+									 	if (($rollover === null) || ($(this).data('tabindex') < $rollover.data('tabindex'))){
+										 $rollover=$(this);
+										}
+									 }
+								 } else {
+									 if ($focus.data('tabindex') > $(this).data('tabindex')){
+									 	if (($next === null) || ($(this).data('tabindex') > $next.data('tabindex'))){
+										 $next=$(this);
+										}
+									 }else{
+									 	if (($rollover === null) || ($(this).data('tabindex') > $rollover.data('tabindex'))){
+										 $rollover=$(this);
+										}
+									 }
+								 }
+							 });
 
-				        e.preventDefault();
+						 $next !== null ?
+						 $next.focus() : $rollover.focus();
 
-			      	}
-			    });
-			} else if (!this.isShown) {
-				this.$element.off('keydown.tabindex.modal');
-			}
-		}, 
+						 e.preventDefault();
+
+					 }
+				 });
+			 } else if (!this.isShown) {
+				 this.$element.off('keydown.tabindex.modal');
+			 }
+		 }, 
 		
 		escape: function () {
 			var that = this;
