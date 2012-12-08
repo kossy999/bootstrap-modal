@@ -1,6 +1,10 @@
 /* ===========================================================
  * bootstrap-modal.js v2.0
  * ===========================================================
+ * 2012/12/05 Kazuki Koshimoto
+ * tabプロパティの内容を変更
+ * data-tabindexを付与した際のtabキーでの移動処理を修正
+ *
  * Copyright 2012 Jordan Schroter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
